@@ -24,7 +24,7 @@ app.use('/public',express.static('public'));
 
 const port = process.env.port || 5000;
 
-app.listen(app.get('port'),function (){
+app.listen(process.env.PORT, '0.0.0.0',function (){
     console.log("Started");
     
 });
