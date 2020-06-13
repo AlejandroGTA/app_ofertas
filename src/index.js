@@ -20,7 +20,7 @@ app.use('/productos', require('../src/route/Productos/Productos'));
 app.set('views',path.join(__dirname,'views'));
 app.engine('ejs',engine);
 app.set('view engine','ejs');
-app.use('/public',express.static('public'));
+app.use(__dirname + '/public',express.static('public'));
 
 const port = process.env.port || 5000;
 
