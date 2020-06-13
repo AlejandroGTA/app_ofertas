@@ -22,7 +22,7 @@ app.engine('ejs',engine);
 app.set('view engine','ejs');
 app.use('/public',express.static('public'));
 
-const port = 5000;
+const port = process.env.port || 5000;
 
 app.listen(port,function (){
     console.log("Started");
