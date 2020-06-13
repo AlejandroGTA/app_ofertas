@@ -52,7 +52,7 @@ function revisar(){
      console.log(productosArray);
     if(productosArray.length>0){
       (async () => {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({executablePath:'/usr/bin/chromium-browser'});
         for(var i = 0; i < productosArray.length; i++){
             const page = await browser.newPage();
             flag_link = 0;
