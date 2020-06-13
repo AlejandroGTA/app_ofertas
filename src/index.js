@@ -71,7 +71,7 @@ function revisar(){
               await page.goto(Link_default);
             }
 
-            await page.screenshot({path: `\public\page_${i}.png`});
+            await page.screenshot({path: `/public/page_${i}.png`});
             var html = await page.evaluate(()=> document.body.innerHTML);
             var precio = null;
             extrac('#priceblock_ourprice', html).each(function(){
