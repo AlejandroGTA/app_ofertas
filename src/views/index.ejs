@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>
+<body>
+    <p>Productos de Ofertas</p>
+    <div>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr class="">
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div>
+        <table class="table ">
+            <thead class="thead-dark">
+                <tr class="">
+                    <th scope="col">id</th>
+                    <th scope="col">Link</th>
+                    <th scope="col">Precio</th> 
+                    <th scope="col">Precio Anterior</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Accion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i= 0; i<productoModel.length; i++){%>
+                    <tr>
+                        <td><input name="id"              type="text" value="<%= productoModel[i].id%>"></input></td>
+                        <td><input name="Link"            type="text" value="<%= productoModel[i].Link%>"></input></td>
+                        <td><input name="Precio"          type="text" value="<%= productoModel[i].Precio%>"></input></td>
+                        <td><input name="PrecioAnterior"  type="text" value="<%= productoModel[i].PrecioAnterior%>"></input></td>
+                        <td><img src="../public/img/page_<%=i%>.png" alt="no content" width="300" height="50" class="img-fluid"></td>
+                        <td>
+                            <button type="submit" onclick="Update(this.parentNode.parentNode);">Update</button>
+                            <button type="submit" onclick="Delete(this.parentNode.parentNode);">Delete</button>
+                        </td>
+                    </tr>
+                   <%}%>
+                   <tr>
+                    <td><input name="id"              type="text" value=""></input></td>
+                    <td><input name="Link"            type="text" value=""></input></td>
+                    <td><input name="Precio"          type="text" value="0"></input></td>
+                    <td><input name="PrecioAnterior"  type="text" value="0"></input></td>
+                    <td>
+                        <button type="submit" onclick="ADD(this.parentNode.parentNode);">ADD</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function Update(obj){
+            var id = obj.getElementsByTagName('input')[0].value;
+            var Link = obj.getElementsByTagName('input')[1].value;
+            var Precio = obj.getElementsByTagName('input')[2].value;
+            var PrecioAnterior = obj.getElementsByTagName('input')[3].value;
+
+            var xhr = new XMLHttpRequest();
+            var url = "" + id;
+            xhr.open("PUT", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            var data = JSON.stringify({"Link": Link, "Precio": Precio, "PrecioAnterior": PrecioAnterior});
+            xhr.send(data);
+        }
+
+        function ADD(obj){
+            var Link = obj.getElementsByTagName('input')[1].value;
+            var Precio = obj.getElementsByTagName('input')[2].value;
+            var PrecioAnterior = obj.getElementsByTagName('input')[3].value;
+            
+            var xhr = new XMLHttpRequest();
+            var url = "/productos/";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            var data = JSON.stringify({"Link": Link, "Precio": Precio, "PrecioAnterior": PrecioAnterior});
+            xhr.send(data);
+            console.log(data);
+            location.reload(); 
+        }
+
+        function Delete(obj){
+            var id = obj.getElementsByTagName('input')[0].value;
+
+                var xhr = new XMLHttpRequest();
+                var url = ""+id;
+                xhr.open("DELETE", url, true);
+                // xhr.setRequestHeader("Content-Type", "application/json");
+                // var data = "";
+                xhr.send();
+                location.reload();
+        }
+    </script>
+</body>
+</html>
