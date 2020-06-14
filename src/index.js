@@ -20,7 +20,7 @@ app.use('/productos', require('../src/route/Productos/Productos'));
 app.set('views',path.join(__dirname,'views'));
 app.engine('ejs',engine);
 app.set('view engine','ejs');
-app.use('/public',express.static('public'));
+app.use('/public',express.static(path.join(__dirname,'public')));
 
 const port = process.env.port || 5000;
 
@@ -71,7 +71,7 @@ function revisar(){
               await page.goto(Link_default);
             }
 
-            await page.screenshot({path: path.join('public',`page_${i}.png`)});
+            await page.screenshot({path: path.join(__dirname, 'public',`page_${i}.png`)});
             var html = await page.evaluate(()=> document.body.innerHTML);
             var precio = null;
             extrac('#priceblock_ourprice', html).each(function(){
