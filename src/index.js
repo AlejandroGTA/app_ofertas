@@ -109,7 +109,8 @@ function revisar(){
               });
             }
         }
-        productosArray = null;
+        productosArray = "";
+        html = "";
         await browser.close();
       })();
     }
