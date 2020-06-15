@@ -49,7 +49,7 @@ setInterval(function(){revisar();}, 90000);
 function revisar(){
   var producto = async()=> { 
     const productosArray = await prodcutos.find({});
-     console.log(productosArray);
+     console.log("Process find offerts");
     if(productosArray.length>0){
       (async () => {
         const browser = await puppeteer.launch({
@@ -67,7 +67,7 @@ function revisar(){
               await page.goto(productosArray[i].Link);
             }
             else if(flag_link == 1){
-              console.log("mal link");
+              console.log("bad link");
               await page.goto(Link_default);
             }
 

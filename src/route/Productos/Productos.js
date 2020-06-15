@@ -25,14 +25,14 @@ route.post('/',async(req, res)=>{
 
 route.get('/',async(req, res)=>{
     let productoModel = await Prodcutos.find({});
-    console.log(productoModel);
+    // console.log(productoModel);
     res.json(productoModel);
 });
 
 route.get('/:id',async(req, res)=>{
     let id = req.params.id;
     let productoModel = await Prodcutos.find({_id:id});
-    console.log(productoModel);
+    // console.log(productoModel);
     res.json(productoModel);
 });
 
@@ -47,7 +47,7 @@ route.put('/:id',async(req, res)=>{
     productoDomain.Link = Link;
     productoDomain.Precio = Precio;
     productoDomain.PrecioAnterior = PrecioAnterior;
-    console.log(req.body);
+    // console.log(req.body);
      await productoDomain.save();
     res.json(productoDomain);
 });
