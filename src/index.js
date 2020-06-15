@@ -48,7 +48,7 @@ setInterval(function(){revisar();}, 90000);
 
 function revisar(){
   var producto = async()=> { 
-    const productosArray = await prodcutos.find({});
+    var productosArray = await prodcutos.find({});
      console.log("Process find offerts");
     if(productosArray.length>0){
       (async () => {
@@ -82,7 +82,8 @@ function revisar(){
                 precio = extrac(this).text();
               });
             }
-
+            html = "";
+            
             precio = precio.substr(1);
             precio = precio.replace(",","");
             precio = precio * 1;
