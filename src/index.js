@@ -94,11 +94,11 @@ function revisar(){
                 subject: 'Sending Email using Node.js',
                 text: 'Oferta!  '+precio+' Link: ' +productosArray[i].Link,
                 // html: '<h1>'+precio+'</h1><p>'+productosArray[i].Link+'</p>',
-                /*attachments: [{
+                attachments: [{
                   filename: 'page_'+i+'.png',
-                  path: __dirname +'/public/img/page_'+i+'.png',
+                  path: path.join(__dirname,'public','page_'+i+'.png'),
                   cid: 'img' 
-                }]*/
+                }]
               };
               transporter.sendMail(mailOptions, function(error, info){
                 if (error) {
@@ -109,6 +109,7 @@ function revisar(){
               });
             }
         }
+        productosArray = null;
         await browser.close();
       })();
     }
