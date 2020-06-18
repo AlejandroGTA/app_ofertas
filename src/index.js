@@ -24,7 +24,7 @@ app.use('/public',express.static(path.join(__dirname,'public')));
 
 const port = process.env.port || 5000;
 // process.env.PORT, '0.0.0.0'
-app.listen(port,function (){
+app.listen(process.env.PORT, '0.0.0.0',function (){
     console.log("Started");
     
 });
