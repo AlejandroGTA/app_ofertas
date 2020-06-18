@@ -46,7 +46,7 @@ var flagNull = 0;
 var time = 1800000;
 var time2 = (50 * 1000);
 
-setInterval(function(){revisar();}, 90000);
+setInterval(function(){revisar();}, time);
 
 function revisar(){
   var producto = async()=> { 
