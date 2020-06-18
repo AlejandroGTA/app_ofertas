@@ -74,7 +74,7 @@ function revisar(){
               await page.goto(Link_default);
             }
 
-            await page.screenshot({path: path.join(__dirname, 'public',`page_${i}.png`)});
+            await page.screenshot({path: path.join(__dirname, 'public',`page_${i}.jpg`)});
             var html = await page.evaluate(()=> document.body.innerHTML);
             var precio = null;
             extrac('#priceblock_ourprice', html).each(function(){
@@ -104,8 +104,8 @@ function revisar(){
                 subject: 'Sending Email using Node.js',
                 text: 'Oferta!  '+precio+' Link: ' +productosArray[i].Link,
                 attachments: [{
-                  filename: 'page_'+i+'.png',
-                  path: path.join(__dirname,'public','page_'+i+'.png'),
+                  filename: 'page_'+i+'.jpg',
+                  path: path.join(__dirname,'public','page_'+i+'.jpg'),
                   cid: 'img' 
                 }]
               };
@@ -131,7 +131,7 @@ function revisar(){
                 );
               }
             }
-          await productoDomain.save();
+          // await productoDomain.save();
         }
         productosArray = "";
         html = "";
