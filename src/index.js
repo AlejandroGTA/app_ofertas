@@ -23,8 +23,8 @@ app.set('view engine','ejs');
 app.use('/public',express.static(path.join(__dirname,'public')));
 
 const port = process.env.port || 5000;
-
-app.listen(process.env.PORT, '0.0.0.0',function (){
+// process.env.PORT, '0.0.0.0'
+app.listen(port,function (){
     console.log("Started");
     
 });
@@ -42,8 +42,10 @@ const extrac = require('cheerio');
 
 var Link_default = "https://www.amazon.com.mx/Echo-Dot-3ra-generaci%C3%B3n-inteligente/dp/B07PDHT86G/ref=sr_1_1_sspa?__mk_es_MX=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=alexa&qid=1592067159&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEyRVdVM1A3WDBFVjdEJmVuY3J5cHRlZElkPUEwMTMzMjMwM1FSMlhIMVdVR0NHRCZlbmNyeXB0ZWRBZElkPUEwNjM4MDQwMzJGT05MQTQyWkc2RSZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=";
 var flag_link = 0;
-var time = 3600000;
+var flagNull = 0;
+var time = 1800000;
 var time2 = (50 * 1000);
+
 setInterval(function(){revisar();}, 90000);
 
 function revisar(){
@@ -56,8 +58,9 @@ function revisar(){
            headless: true,
            args: ['--no-sandbox'],
         });
+        const page = await browser.newPage();
+        flagNull = 0;
         for(var i = 0; i < productosArray.length; i++){
-            const page = await browser.newPage();
             flag_link = 0;
             if(productosArray[i].Link == ""){
               flag_link = 1;
@@ -83,18 +86,23 @@ function revisar(){
               });
             }
             html = "";
-            
-            precio = precio.substr(1);
-            precio = precio.replace(",","");
-            precio = precio * 1;
-            // console.log(precio);
-            if(precio < productosArray[i].Precio*1){
+            if(precio == null){
+              flagNull = 1;
+            }
+            else{
+              precio = precio.replace("$","");
+              precio = precio.replace(",","");
+              productosArray[i].Precio = precio;
+              precio = precio * 1;
+            }
+            if(precio <= (productosArray[i].PrecioMasBajo*1) && productosArray[i].FlagEmail == false && flagNull == 0){
+              productosArray[i].FlagEmail = true;
+
               var mailOptions = {
                 from: 'ofertasalex1927@gmail.com',
                 to: 'aguilar_1927@hotmail.com',
                 subject: 'Sending Email using Node.js',
                 text: 'Oferta!  '+precio+' Link: ' +productosArray[i].Link,
-                // html: '<h1>'+precio+'</h1><p>'+productosArray[i].Link+'</p>',
                 attachments: [{
                   filename: 'page_'+i+'.png',
                   path: path.join(__dirname,'public','page_'+i+'.png'),
@@ -109,6 +117,21 @@ function revisar(){
                 }
               });
             }
+            if(precio == productosArray[i].precio){
+            }
+            else{
+              if(flagNull == 0){
+                var productoDomain = await prodcutos.findByIdAndUpdate(
+                  productosArray[i]._id,{
+                    Link:productosArray[i].Link,
+                    PrecioMasBajo:productosArray[i].PrecioMasBajo,
+                    Precio:productosArray[i].Precio,
+                    FlagEmail:productosArray[i].FlagEmail  
+                  }
+                );
+              }
+            }
+          await productoDomain.save();
         }
         productosArray = "";
         html = "";

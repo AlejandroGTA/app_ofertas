@@ -13,11 +13,12 @@ route.get('/home', async(req, res)=>{
 });
 
 route.post('/',async(req, res)=>{
-    const {Link,Precio,PrecioAnterior} = req.body;
+    const {Link,PrecioMasBajo,Precio,FlagEmail} = req.body;
     let productoModel =  new Prodcutos;
     productoModel.Link = Link;
+    productoModel.PrecioMasBajo = PrecioMasBajo;
     productoModel.Precio = Precio;
-    productoModel.PrecioAnterior = PrecioAnterior;
+    productoModel.FlagEmail = FlagEmail;
     await productoModel.save();
     res.json(productoModel);
     // console.log("save");
@@ -38,17 +39,14 @@ route.get('/:id',async(req, res)=>{
 
 route.put('/:id',async(req, res)=>{
     let id = req.params.id;
-    const {Link,Precio,PrecioAnterior} = req.body;
+    const {Link,PrecioMasBajo,Precio,FlagEmail} = req.body;
     let productoDomain = await Prodcutos.findByIdAndUpdate(
-        {_id:id},
-        {Link:Link},
-        {Precio:Precio}
+        id,
+        {Link:Link,
+        PrecioMasBajo:PrecioMasBajo,
+        Precio:Precio,
+        FlagEmail:FlagEmail}
     );
-    productoDomain.Link = Link;
-    productoDomain.Precio = Precio;
-    productoDomain.PrecioAnterior = PrecioAnterior;
-    // console.log(req.body);
-     await productoDomain.save();
     res.json(productoDomain);
 });
 

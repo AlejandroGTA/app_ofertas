@@ -4,8 +4,9 @@ const { Schema } = mongoose;
 
 const ProductoSchema = new mongoose.Schema({
     Link:String,
+    PrecioMasBajo:String,
     Precio:String,
-    PrecioAnterior:String
+    FlagEmail:Boolean
 });
 
 module.exports = ProductosModel = mongoose.model('ProductosModel', ProductoSchema);

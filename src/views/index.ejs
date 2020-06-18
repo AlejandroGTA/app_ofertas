@@ -17,12 +17,13 @@
     </div>
     <div>
         <table class="table ">
-            <thead class="thead-dark">
+            <thead class="thead-dark ">
                 <tr class="">
-                    <th scope="col">id</th>
+                    <th style="display: none;" scope="col">id</th>
                     <th scope="col">Link</th>
-                    <th scope="col">Precio</th> 
-                    <th scope="col">Precio Anterior</th>
+                    <th scope="col">Precio mas bajo</th> 
+                    <th scope="col">Precio</th>
+                    <th scope="col">Triger</th>
                     <th scope="col">Imagen</th>
                     <th scope="col">Accion</th>
                 </tr>
@@ -30,22 +31,24 @@
             <tbody>
                 <% for(var i= 0; i<productoModel.length; i++){%>
                     <tr>
-                        <td><input name="id"              type="text" value="<%= productoModel[i].id%>"></input></td>
-                        <td><input name="Link"            type="text" value="<%= productoModel[i].Link%>"></input></td>
-                        <td><input name="Precio"          type="text" value="<%= productoModel[i].Precio%>"></input></td>
-                        <td><input name="PrecioAnterior"  type="text" value="<%= productoModel[i].PrecioAnterior%>"></input></td>
+                        <td style="display: none;"><input name="id"               disabled type="text" value="<%= productoModel[i].id%>"></input></td>
+                        <td><input name="Link"              type="text" value="<%= productoModel[i].Link%>"></input></td>
+                        <td><input name="PrecioMasBajo"     style="width: 40%;" type="text" value="<%= productoModel[i].PrecioMasBajo%>"></input></td>
+                        <td><input name="Precio"            style="width: 50%;" type="text" value="<%= productoModel[i].Precio%>"></input></td>
+                        <td><input name="Triger"          readonly style="width: 70%;" <% if(productoModel[i].FlagEmail){%> class="btn btn-success"<%}else{%> class="btn btn-danger" <%}%> type="text" value="<%= productoModel[i].FlagEmail%>" onclick="flag(this.parentNode.parentNode);"></input></td>
                         <td><img src="../public/page_<%=i%>.png" alt="no content" width="300" height="50" class="img-fluid"></td>
                         <td>
-                            <button type="submit" onclick="Update(this.parentNode.parentNode);">Update</button>
-                            <button type="submit" onclick="Delete(this.parentNode.parentNode);">Delete</button>
+                            <button class="btn btn-primary" type="submit" onclick="Update(this.parentNode.parentNode);">Update</button>
+                            <button class="btn btn-secundary" type="submit" onclick="Delete(this.parentNode.parentNode);">Delete</button>
                         </td>
                     </tr>
                    <%}%>
                    <tr>
-                    <td><input name="id"              type="text" value=""></input></td>
-                    <td><input name="Link"            type="text" value=""></input></td>
-                    <td><input name="Precio"          type="text" value="0"></input></td>
-                    <td><input name="PrecioAnterior"  type="text" value="0"></input></td>
+                    <td><input name="Link"              type="text" value=""></input></td>
+                    <td><input name="PrecioMasBajo"     type="text" value="0"></input></td>
+                    <td><input name="Precio"            type="text" value="0"></input></td>
+                    <td><input name="Triger"            readonly style="width: 40%;" class="btn btn-danger" type="text" value="false" onclick="flagAdd(this.parentNode.parentNode);"></input></td>
+                       
                     <td>
                         <button type="submit" onclick="ADD(this.parentNode.parentNode);">ADD</button>
                     </td>
@@ -57,27 +60,31 @@
         function Update(obj){
             var id = obj.getElementsByTagName('input')[0].value;
             var Link = obj.getElementsByTagName('input')[1].value;
-            var Precio = obj.getElementsByTagName('input')[2].value;
-            var PrecioAnterior = obj.getElementsByTagName('input')[3].value;
+            var PrecioMasBajo = obj.getElementsByTagName('input')[2].value;
+            var Precio = obj.getElementsByTagName('input')[3].value;
+            var FlagEmail = obj.getElementsByTagName('input')[4].value;
 
             var xhr = new XMLHttpRequest();
             var url = "" + id;
             xhr.open("PUT", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
-            var data = JSON.stringify({"Link": Link, "Precio": Precio, "PrecioAnterior": PrecioAnterior});
+            var data = JSON.stringify({"Link": Link, "PrecioMasBajo": PrecioMasBajo, "Precio": Precio, "FlagEmail":FlagEmail});
             xhr.send(data);
         }
 
         function ADD(obj){
-            var Link = obj.getElementsByTagName('input')[1].value;
-            var Precio = obj.getElementsByTagName('input')[2].value;
-            var PrecioAnterior = obj.getElementsByTagName('input')[3].value;
             
+            var Link = obj.getElementsByTagName('input')[0].value;
+            var PrecioMasBajo = obj.getElementsByTagName('input')[1].value;
+            var Precio = obj.getElementsByTagName('input')[2].value;
+            var FlagEmail = obj.getElementsByTagName('input')[3].value;
+
             var xhr = new XMLHttpRequest();
             var url = "/productos/";
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
-            var data = JSON.stringify({"Link": Link, "Precio": Precio, "PrecioAnterior": PrecioAnterior});
+            var data = JSON.stringify({"Link": Link, "PrecioMasBajo": PrecioMasBajo, "Precio": Precio, "FlagEmail":FlagEmail});
+            
             xhr.send(data);
             console.log(data);
             location.reload(); 
@@ -93,6 +100,34 @@
                 // var data = "";
                 xhr.send();
                 location.reload();
+        }
+
+        function flag(obj){
+            var flag = obj.getElementsByTagName('input')[4];
+            if(flag.value == "true"){
+                flag.value = "false";
+                flag.className = "btn btn-danger";
+            }
+            else{
+                flag.value = "true";
+                flag.className = "btn btn-success";
+            }
+            // console.log(flag.value);
+            Update(obj);
+
+        }
+
+        function flagAdd(obj){
+            var flag = obj.getElementsByTagName('input')[3];
+            if(flag.value == "true"){
+                flag.value = "false";
+                flag.className = "btn btn-danger";
+            }
+            else{
+                flag.value = "true";
+                flag.className = "btn btn-success";
+            }
+            // console.log(flag);
         }
     </script>
 </body>
