@@ -36,7 +36,7 @@
                         <td><input name="PrecioMasBajo"     style="width: 40%;" type="text" value="<%= productoModel[i].PrecioMasBajo%>"></input></td>
                         <td><input name="Precio"            style="width: 50%;" type="text" value="<%= productoModel[i].Precio%>"></input></td>
                         <td><input name="Triger"          readonly style="width: 70%;" <% if(productoModel[i].FlagEmail){%> class="btn btn-success"<%}else{%> class="btn btn-danger" <%}%> type="text" value="<%= productoModel[i].FlagEmail%>" onclick="flag(this.parentNode.parentNode);"></input></td>
-                        <td><img src="../public/page_<%=i%>.png" alt="no content" width="300" height="50" class="img-fluid"></td>
+                        <td><img src="../public/page_<%=i%>.jpg" alt="no content" width="300" height="50" class="img-fluid"></td>
                         <td>
                             <button class="btn btn-primary" type="submit" onclick="Update(this.parentNode.parentNode);">Update</button>
                             <button class="btn btn-secundary" type="submit" onclick="Delete(this.parentNode.parentNode);">Delete</button>
